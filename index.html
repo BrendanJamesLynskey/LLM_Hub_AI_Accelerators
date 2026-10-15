@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Accelerators &mdash; LLM Hub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;500;600;700&family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,700&family=Share+Tech+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #10294a; --bg-card: #143154; --bg-code: #19395f;
+            --text-primary: #eff4f8; --text-secondary: #98b2cd;
+            --accent: #72cf9b; --accent-dim: #72cf9b44; --accent-glow: #72cf9b33;
+            --border: #294f79;
+            --font-display: 'Saira Semi Condensed', sans-serif;
+            --font-mono: 'Share Tech Mono', 'Share Tech Mono', monospace;
+            --font-body: 'Archivo', sans-serif;
+            --max-width: 960px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg-primary); color: var(--text-primary);
+               font-family: var(--font-body); font-size: 17px; line-height: 1.7;
+               overflow-x: hidden; }
+        .hero { min-height: 60vh; display: flex; flex-direction: column;
+                justify-content: center; align-items: center;
+                padding: 4rem 1.5rem 3rem; text-align: center; position: relative; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 50%;
+                        transform: translateX(-50%); width: 600px; height: 600px;
+                        background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+                        pointer-events: none; z-index: 0; }
+        .hero > * { position: relative; z-index: 1; }
+        .series-label { font-family: var(--font-mono); font-size: 0.85rem;
+                        color: var(--accent); letter-spacing: 0.15em;
+                        text-transform: uppercase; margin-bottom: 1rem; }
+        .hero h1 { font-family: var(--font-display);
+                   font-size: clamp(2rem, 5vw, 3rem); font-weight: 700;
+                   color: var(--text-primary); line-height: 1.2; margin-bottom: 1rem; }
+        .hero h1 .accent { color: var(--accent); }
+        .hero .subtitle { font-size: 1.1rem; color: var(--text-secondary);
+                          max-width: 720px; margin-bottom: 1.5rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem;
+                justify-content: center; margin-bottom: 1rem; }
+        .tag { font-family: var(--font-mono); font-size: 0.75rem;
+               padding: 0.25rem 0.75rem; border-radius: 999px;
+               border: 1px solid var(--accent); color: var(--accent);
+               background: var(--accent-dim); white-space: nowrap; }
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1.5rem; }
+        h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+             color: var(--accent); margin: 1rem 0 1.25rem; }
+        .deck-list { display: flex; flex-direction: column; gap: 0.6rem;
+                     list-style: none; padding: 0; counter-reset: deck; }
+        .deck-card { display: flex; gap: 1rem; padding: 1rem 1.25rem;
+                     background: var(--bg-card); border: 1px solid var(--border);
+                     border-left: 3px solid var(--accent); border-radius: 6px;
+                     transition: border-color 0.15s; counter-increment: deck; }
+        .deck-card:hover { border-color: var(--accent); }
+        .deck-card.roadmap { border-left-color: #fac667; }
+        .deck-card.roadmap:hover { border-color: #fac667; }
+        .deck-card .num { font-family: var(--font-mono); font-size: 0.8rem;
+                          color: var(--accent); min-width: 2rem;
+                          padding-top: 0.15rem; }
+        .deck-card.roadmap .num { color: #fac667; }
+        .deck-card .num::before { content: counter(deck, decimal-leading-zero); }
+        .deck-card .body { flex: 1; min-width: 0; }
+        .deck-card .deck-title { font-family: var(--font-display); font-size: 1.05rem;
+                                 font-weight: 600; color: var(--text-primary);
+                                 margin-bottom: 0.2rem; }
+        .deck-card a.deck-title { text-decoration: none; }
+        .deck-card a.deck-title:hover { color: var(--accent); }
+        .deck-card .desc { font-size: 0.92rem; color: var(--text-secondary); }
+        .deck-card .meta { font-family: var(--font-mono); font-size: 0.7rem;
+                           color: var(--text-secondary); margin-top: 0.4rem;
+                           display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .badge { display: inline-block; font-family: var(--font-mono);
+                 font-size: 0.65rem; padding: 0.1rem 0.5rem; border-radius: 999px;
+                 border: 1px solid var(--border); color: var(--text-secondary); }
+        .badge.live { border-color: var(--accent); color: var(--accent);
+                      background: var(--accent-dim); }
+        .badge.roadmap { border-color: #fac667; color: #fac667;
+                         background: rgba(250,198,103,0.08); }
+        .callout { background: var(--bg-card); border-left: 3px solid var(--accent);
+                   border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+        .callout p { margin-bottom: 0; color: var(--text-secondary); }
+        .callout p strong { color: var(--text-primary); }
+        .footer { text-align: center; padding: 3rem 1.5rem;
+                  color: var(--text-secondary); font-size: 0.85rem;
+                  border-top: 1px solid var(--border); max-width: var(--max-width);
+                  margin: 3rem auto 0; }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.8rem; }
+            .deck-card { flex-direction: column; gap: 0.3rem; }
+        }
+        .slide p a, .slide td a, .slide li a, .callout a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+        .slide p a:hover, .slide td a:hover, .slide li a:hover, .callout a:hover { border-bottom-style: solid; }
+        .hero { overflow: hidden; }
+        .diagram-panel { min-width: 0; }
+        .metric-label .katex, .callout-label .katex, .series-label .katex,
+        .metric-label .katex *, .callout-label .katex * { text-transform: none; }
+        .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; }
+        @media (max-width: 640px) { .katex-display { font-size: 0.8em; } }
+        .table-wrap { overflow-x: auto; margin: 1rem 0; }
+        .table-wrap table { min-width: 100%; }
+        .num-table td { font-family: var(--font-mono); font-size: 0.8rem; }
+        .num-table td:first-child { font-family: var(--font-body); }
+        td sup a { font-size: 0.65rem; }
+        .chart-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; margin: 1.25rem 0; }
+        .chart-wrap svg { display: block; width: 100%; height: auto; }
+        .chart-cap { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; }
+        .num-strong { color: var(--text-primary); font-weight: 600; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.75rem; margin: 1.25rem 0; }
+        .metric { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; min-width: 0; }
+        .metric-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--accent); line-height: 1.2; overflow-wrap: anywhere; }
+        .metric-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.35rem; }
+    </style>
+
+<style>:root{font-synthesis-weight:none}
+/* deck-mobile-fix:hero */ .hero{overflow:hidden}@supports (overflow-x:clip){.hero{overflow:visible;overflow-x:clip}}
+/* deck-mobile-fix:phone */ @media (max-width:640px){.diagram-box,.tier-fill,.section-divider>span,.action-btn{white-space:normal;overflow-wrap:anywhere}.diagram-grid>*,.diagram-panel,.diagram-box,.code-block,.callout,.metric,.control-group,.control-row>*,.pipeline-body,.roll-track>*,.tier-fill,.timeline-row>*{min-width:0;max-width:100%}p,li,a,code,td,th,.callout,.diagram-panel{overflow-wrap:break-word}pre{max-width:100%;overflow-x:auto}table{display:block;max-width:100%;overflow-x:auto}.katex-display,.bits,.canvas-wrap,.influence-map-wrapper,.timeline-track,div:has(>.bank-cell){max-width:100%;overflow-x:auto;overflow-y:hidden}select,input,img,video,iframe,.action-btn{max-width:100%}canvas{max-width:100%;height:auto}}
+        /* accel-charts (Okabe-Ito, the site's placement colours) */
+        .chart .grid { stroke: var(--border); stroke-width: 1; stroke-dasharray: 2 4; }
+        .chart .lbl { fill: var(--text-secondary); font-family: var(--font-mono); font-size: 12px; }
+        .chart .lbl.ax { fill: var(--text-primary); font-size: 12.5px; }
+        .chart .bar { stroke: none; opacity: 0.9; }
+        .s1 { fill: #56b4e9; } .s2 { fill: #e69f00; } .s3 { fill: #009e73; } .s4 { fill: #cc79a7; }
+        @media (max-width: 640px) { .chart .lbl { font-size: 16px; } .chart .lbl.ax { font-size: 16px; } }
+    </style>
+</head>
+<body>
+<header class="hero">
+    <div class="series-label">LLM Hub &mdash; AI Accelerators</div>
+    <h1>AI <span class="accent">Accelerators</span></h1>
+    <p class="subtitle">The families of AI silicon in three decks, each run on the same decoder model: where the weights live, what moves on each step, and who decides when it moves. Every number is computed by a tested model with every specification sourced.</p>
+    <div class="tags"><span class="tag">GPU</span><span class="tag">Systolic</span><span class="tag">Wafer-scale</span><span class="tag">LPU</span><span class="tag">Dataflow</span><span class="tag">Mesh</span><span class="tag">NPU / FPGA</span><span class="tag">In-memory</span></div>
+</header>
+<main class="container">
+    <div class="callout"><p><strong>Live, animated companion:</strong> <a href="https://ai-accelerators-explained.vercel.app">AI Accelerators Explained</a> (Hardware track) &mdash; ten chapters, each built around an animation computed by the site&rsquo;s model. Each deck below links its chapters; every specification&rsquo;s source and access date is on <a href="https://ai-accelerators-explained.vercel.app/specs">the specifications page</a>.</p></div>
+    <h2>Presentations in This Series</h2>
+    <ol class="deck-list">
+<li class="deck-card"><div class="num"></div><div class="body"><a class="deck-title" href="https://brendanjameslynskey.github.io/AI_Accelerators_01_The_Design_Space/">The Design Space and the Memory Wall &rarr;</a><div class="desc">The three axes and the eight families; the running workload (a Llama decoder); GPUs and systolic designs as the baseline; capacity as the first trade; every family side by side; bounds against published figures; what the families are converging on.</div><div class="meta"><span class="badge live">live</span><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/01-the-design-space">site ch 1</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/02-gpus-the-baseline">site ch 2</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/03-systolic-designs">site ch 3</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/10-choosing">site ch 10</a></div></div></li>
+<li class="deck-card"><div class="num"></div><div class="body"><a class="deck-title" href="https://brendanjameslynskey.github.io/AI_Accelerators_02_SRAM_Machines/">SRAM Machines: Wafers, LPUs and IPUs &rarr;</a><div class="desc">Why SRAM; a wafer of 84 dies and how defects are survived; models split across wafers and weight streaming; the GroqChip's static schedule and a 576-chip chain; what the published speeds say about the bound; the IPU's bulk-synchronous tiles.</div><div class="meta"><span class="badge live">live</span><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/04-wafer-scale">site ch 4</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/05-compiler-scheduled">site ch 5</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/06-reconfigurable-dataflow">site ch 6</a></div></div></li>
+<li class="deck-card"><div class="num"></div><div class="body"><a class="deck-title" href="https://brendanjameslynskey.github.io/AI_Accelerators_03_Dataflow_Meshes_Edge_In_Memory/">Dataflow, Meshes, Edge and In-Memory &rarr;</a><div class="desc">A layer kernel by kernel vs fused; three tiers of memory and the SN40L paper's measured speed; a mesh of cores split over cards; a batch-1 decode at narrower weights on an NPU or FPGA; a decoder on phase-change crossbars, and what it costs in capacity and precision.</div><div class="meta"><span class="badge live">live</span><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/06-reconfigurable-dataflow">site ch 6</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/07-meshes-of-cores">site ch 7</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/08-fpgas-and-npus">site ch 8</a><a class="badge" href="https://ai-accelerators-explained.vercel.app/learn/09-in-memory-compute">site ch 9</a></div></div></li>
+    </ol>
+    <div class="callout"><p><strong>Bounds, said plainly.</strong> The model computes bounds from vendors&rsquo; stated bandwidths and peak rates. For chips that read their weights from DRAM the bound is close to what systems achieve; for SRAM designs the published speeds are a small share of it, and the decks say so. No vendor claim is used as an input.</p></div>
+    <div class="callout"><p><strong>The two baseline families in depth:</strong> <a href="https://github.com/BrendanJamesLynskey/LLM_Hub_NVIDIA_GPUs">NVIDIA GPU Architectures</a> (<a href="https://brendanjameslynskey.github.io/LLM_Hub_NVIDIA_GPUs/">live</a>) and <a href="https://github.com/BrendanJamesLynskey/LLM_Hub_Google_TPUs">Google TPUs</a> (<a href="https://brendanjameslynskey.github.io/LLM_Hub_Google_TPUs/">live</a>). Computing with light: <a href="https://github.com/BrendanJamesLynskey/LLM_Hub_Fourier_Optics_Inference">Fourier Optics for Inference</a>.</p></div>
+</main>
+
+<footer class="footer">
+    <p>Part of the <a href="https://github.com/BrendanJamesLynskey/LLMs">LLMs hub</a> &mdash; an index of presentation series for AI/LLM engineers.</p>
+</footer>
+
+</body>
+</html>
