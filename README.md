@@ -1,3 +1,7 @@
+<!-- portfolio-strip:start (brief 40) -->
+<sub>**Brendan Lynskey** · [Portfolio home](https://brendanjameslynskey.github.io/) · [Interactive sites](https://brendanjameslynskey.github.io/#sites)</sub>
+<!-- portfolio-strip:end -->
+
 # AI Accelerators
 
 The families of AI silicon, compared on the same work: GPUs, systolic designs, wafer-scale engines, compiler-scheduled SRAM chips, reconfigurable dataflow, meshes of small cores, FPGAs and edge NPUs, and in-memory compute. For each: where the weights live, what moves on each step, and who decides when it moves.
